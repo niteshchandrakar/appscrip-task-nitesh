@@ -1,0 +1,11 @@
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  width: 200px;
+}
