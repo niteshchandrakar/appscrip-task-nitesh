@@ -1,0 +1,157 @@
+.footer {
+    background-color: #000;
+    color: #fff;
+    padding: 40px 20px;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+.topSection {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.newsletter {
+    max-width: 400px;
+}
+
+.subscribe {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.subscribe input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+}
+
+.subscribe button {
+    padding: 10px 20px;
+    background: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.contactCurrency>div {
+    margin-bottom: 20px;
+}
+
+.divider {
+    margin: 40px 0 20px;
+    border-color: #444;
+}
+
+.bottomSection {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.dropdownSection {
+    flex: 1;
+    min-width: 200px;
+}
+
+.dropdownHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdownHeader h5 {
+    margin: 0;
+}
+
+.dropdownContent {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.dropdownContent.open {
+    max-height: 500px;
+    margin-top: 10px;
+}
+
+.dropdownContent ul {
+    list-style: none;
+    padding: 0;
+}
+
+.dropdownContent li {
+    margin: 6px 0;
+    cursor: pointer;
+}
+
+.chevron {
+    transition: transform 0.3s;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+.socialIcons svg {
+    font-size: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.payIcons {
+    display: flex;
+    justify-content: center;
+}
+
+.payIcons img {
+    height: 20px;
+    width: 40px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 12px;
+    color: #ccc;
+}
+
+/* Responsive accordion behavior */
+@media (max-width: 768px) {
+    .bottomSection {
+        flex-direction: column;
+    }
+
+    .subscribe {
+        flex-direction: column;
+    }
+
+    .subscribe input,
+    .subscribe button {
+        width: 100%;
+    }
+}
+
+/* Desktop: Always show dropdown content */
+@media (min-width: 769px) {
+    .dropdownContent {
+        max-height: none !important;
+        overflow: visible !important;
+        margin-top: 10px;
+    }
+
+    .chevron {
+        display: none;
+    }
+
+    .dropdownHeader {
+        cursor: default;
+    }
+}
