@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./../styles/ProductListPage.module.css";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
+import ProductCard from "./ProductCard";
 
 type Product = {
   id: number;
@@ -116,8 +117,8 @@ const ProductListPage = () => {
             showFilters ? styles.showFilter : ""
           }`}
         >
-          <h3>Filter by</h3>
-
+          <p style={{ fontWeight: "bolder" }}>Filter by</p>
+          <hr style={{ border: "0", borderTop: "1px solid #ddd" }} />
           {/* Category Dropdown */}
           <div className={styles.dropdown}>
             <div
@@ -144,13 +145,15 @@ const ProductListPage = () => {
                         )
                       }
                     />
-                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    <span style={{ marginLeft: "5px" }}>
+                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    </span>
                   </label>
                 ))}
               </div>
             )}
           </div>
-
+          <hr style={{ border: "0", borderTop: "1px solid #ddd" }} />
           {/* Rating Dropdown */}
           <div className={styles.dropdown}>
             <div
@@ -176,7 +179,7 @@ const ProductListPage = () => {
               </div>
             )}
           </div>
-
+          <hr style={{ border: "0", borderTop: "1px solid #ddd" }} />
           {/* Minimum Reviews Dropdown */}
           <div className={styles.dropdown}>
             <div
@@ -202,6 +205,7 @@ const ProductListPage = () => {
               </div>
             )}
           </div>
+          <hr style={{ border: "0", borderTop: "1px solid #ddd" }} />
         </div>
 
         {loading ? (
@@ -211,16 +215,7 @@ const ProductListPage = () => {
         ) : (
           <div className={styles.productGrid}>
             {filteredAndSortedProducts.map((product) => (
-              <div className={styles.productCard} key={product.id}>
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className={styles.productImage}
-                />
-                <h4 className={styles.productName}>{product.title}</h4>
-                <p className={styles.productDetails}>${product.price}</p>
-                <span className={styles.wishlist}>🧡</span>
-              </div>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

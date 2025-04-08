@@ -41,7 +41,7 @@ export default function Header() {
 
         <div className={styles.userActions}>
           <FaSearch />
-          <FaHeart />
+          <FaHeart color="red" />
           <FaShoppingBag />
           <FaUser />
           <div className={styles.language}>
