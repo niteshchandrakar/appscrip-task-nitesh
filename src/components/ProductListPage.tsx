@@ -8,12 +8,19 @@ type Product = {
   price: number;
   description: string;
   image: string;
+  category: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 };
 
 const ProductListPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [sortOption, setSortOption] = useState("RECOMMENDED");
 
   const toggleFilters = () => setShowFilters((prev) => !prev);
 
@@ -26,6 +33,26 @@ const ProductListPage = () => {
       })
       .catch(() => setLoading(false));
   }, []);
+
+  const filteredAndSortedProducts = [...products]
+    .filter((product) => {
+      if (!selectedCategory) return true;
+      return product.category === selectedCategory;
+    })
+    .sort((a, b) => {
+      switch (sortOption) {
+        case "PRICE: LOW TO HIGH":
+          return a.price - b.price;
+        case "PRICE: HIGH TO LOW":
+          return b.price - a.price;
+        case "POPULAR":
+          return b.rating?.rate - a.rating?.rate;
+        case "NEWEST FIRST":
+          return b.id - a.id;
+        default:
+          return 0;
+      }
+    });
 
   return (
     <div className={styles.pageWrapper}>
@@ -41,14 +68,20 @@ const ProductListPage = () => {
 
       <div className={styles.controls}>
         <div style={{ display: "flex", gap: "40px" }}>
-          <div className={styles.itemCount}>{products.length} ITEMS</div>
+          <div className={styles.itemCount}>
+            {filteredAndSortedProducts.length} ITEMS
+          </div>
 
           <button className={styles.filterToggle} onClick={toggleFilters}>
             <FaChevronRight /> {showFilters ? "HIDE FILTER" : "SHOW FILTER"}
           </button>
         </div>
         <div className={styles.selectWrapper}>
-          <select className={styles.sortSelect}>
+          <select
+            className={styles.sortSelect}
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
             <option>RECOMMENDED</option>
             <option>NEWEST FIRST</option>
             <option>POPULAR</option>
@@ -74,20 +107,66 @@ const ProductListPage = () => {
         >
           <h3>Filter by</h3>
           <label>
-            <input type="checkbox" /> Category 1
+            <input
+              type="checkbox"
+              checked={selectedCategory === "men's clothing"}
+              onChange={() =>
+                setSelectedCategory(
+                  selectedCategory === "men's clothing"
+                    ? null
+                    : "men's clothing"
+                )
+              }
+            />
+            Men's Clothing
           </label>
           <label>
-            <input type="checkbox" /> Category 2
+            <input
+              type="checkbox"
+              checked={selectedCategory === "women's clothing"}
+              onChange={() =>
+                setSelectedCategory(
+                  selectedCategory === "women's clothing"
+                    ? null
+                    : "women's clothing"
+                )
+              }
+            />
+            Women's Clothing
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={selectedCategory === "jewelery"}
+              onChange={() =>
+                setSelectedCategory(
+                  selectedCategory === "jewelery" ? null : "jewelery"
+                )
+              }
+            />
+            Jewelry
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={selectedCategory === "electronics"}
+              onChange={() =>
+                setSelectedCategory(
+                  selectedCategory === "electronics" ? null : "electronics"
+                )
+              }
+            />
+            Electronics
           </label>
         </div>
 
         {loading ? (
           <div className={styles.loading}>Loading products...</div>
-        ) : products.length === 0 ? (
+        ) : filteredAndSortedProducts.length === 0 ? (
           <div className={styles.noProducts}>No products found.</div>
         ) : (
           <div className={styles.productGrid}>
-            {products.map((product) => (
+            {filteredAndSortedProducts.map((product) => (
               <div className={styles.productCard} key={product.id}>
                 <img
                   src={product.image}
@@ -107,16 +186,3 @@ const ProductListPage = () => {
 };
 
 export default ProductListPage;
-
-import { GetServerSideProps } from "next";
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const res = await fetch("https://fakestoreapi.com/products");
-    const productsFromServer: Product[] = await res.json();
-
-    return { props: { productsFromServer } };
-  } catch {
-    return { props: { productsFromServer: [] } };
-  }
-};
