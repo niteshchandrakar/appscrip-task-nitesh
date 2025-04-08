@@ -20,7 +20,13 @@ const ProductListPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  const [selectedCount, setSelectedCount] = useState<number | null>(null);
   const [sortOption, setSortOption] = useState("RECOMMENDED");
+
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showRatingDropdown, setShowRatingDropdown] = useState(false);
+  const [showCountDropdown, setShowCountDropdown] = useState(false);
 
   const toggleFilters = () => setShowFilters((prev) => !prev);
 
@@ -36,8 +42,12 @@ const ProductListPage = () => {
 
   const filteredAndSortedProducts = [...products]
     .filter((product) => {
-      if (!selectedCategory) return true;
-      return product.category === selectedCategory;
+      if (selectedCategory && product.category !== selectedCategory)
+        return false;
+      if (selectedRating && Math.floor(product.rating.rate) !== selectedRating)
+        return false;
+      if (selectedCount && product.rating.count < selectedCount) return false;
+      return true;
     })
     .sort((a, b) => {
       switch (sortOption) {
@@ -91,6 +101,7 @@ const ProductListPage = () => {
           <FaChevronDown className={styles.selectIcon} />
         </div>
       </div>
+
       <hr
         style={{
           marginBottom: "10px",
@@ -106,58 +117,91 @@ const ProductListPage = () => {
           }`}
         >
           <h3>Filter by</h3>
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedCategory === "men's clothing"}
-              onChange={() =>
-                setSelectedCategory(
-                  selectedCategory === "men's clothing"
-                    ? null
-                    : "men's clothing"
-                )
-              }
-            />
-            Men's Clothing
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedCategory === "women's clothing"}
-              onChange={() =>
-                setSelectedCategory(
-                  selectedCategory === "women's clothing"
-                    ? null
-                    : "women's clothing"
-                )
-              }
-            />
-            Women's Clothing
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedCategory === "jewelery"}
-              onChange={() =>
-                setSelectedCategory(
-                  selectedCategory === "jewelery" ? null : "jewelery"
-                )
-              }
-            />
-            Jewelry
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={selectedCategory === "electronics"}
-              onChange={() =>
-                setSelectedCategory(
-                  selectedCategory === "electronics" ? null : "electronics"
-                )
-              }
-            />
-            Electronics
-          </label>
+
+          {/* Category Dropdown */}
+          <div className={styles.dropdown}>
+            <div
+              className={styles.dropdownHeader}
+              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+            >
+              Category <FaChevronDown />
+            </div>
+            {showCategoryDropdown && (
+              <div className={styles.dropdownContent}>
+                {[
+                  "men's clothing",
+                  "women's clothing",
+                  "jewelery",
+                  "electronics",
+                ].map((cat) => (
+                  <label key={cat}>
+                    <input
+                      type="checkbox"
+                      checked={selectedCategory === cat}
+                      onChange={() =>
+                        setSelectedCategory(
+                          selectedCategory === cat ? null : cat
+                        )
+                      }
+                    />
+                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Rating Dropdown */}
+          <div className={styles.dropdown}>
+            <div
+              className={styles.dropdownHeader}
+              onClick={() => setShowRatingDropdown(!showRatingDropdown)}
+            >
+              Rating <FaChevronDown />
+            </div>
+            {showRatingDropdown && (
+              <div className={styles.dropdownContent}>
+                {[5, 4, 3].map((rate) => (
+                  <label key={rate}>
+                    <input
+                      type="checkbox"
+                      checked={selectedRating === rate}
+                      onChange={() =>
+                        setSelectedRating(selectedRating === rate ? null : rate)
+                      }
+                    />
+                    {rate} stars & up
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Minimum Reviews Dropdown */}
+          <div className={styles.dropdown}>
+            <div
+              className={styles.dropdownHeader}
+              onClick={() => setShowCountDropdown(!showCountDropdown)}
+            >
+              Minimum Reviews <FaChevronDown />
+            </div>
+            {showCountDropdown && (
+              <div className={styles.dropdownContent}>
+                {[100, 200, 300].map((count) => (
+                  <label key={count}>
+                    <input
+                      type="checkbox"
+                      checked={selectedCount === count}
+                      onChange={() =>
+                        setSelectedCount(selectedCount === count ? null : count)
+                      }
+                    />
+                    {count}+ reviews
+                  </label>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {loading ? (
