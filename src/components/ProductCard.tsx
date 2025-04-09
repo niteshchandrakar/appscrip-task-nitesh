@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styles from "./../styles/ProductListPage.module.css";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { FaHeartPulse } from "react-icons/fa6";
+import { FaHeart } from "react-icons/fa";
 type Product = {
   id: number;
   title: string;

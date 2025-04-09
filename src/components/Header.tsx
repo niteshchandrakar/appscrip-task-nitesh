@@ -6,7 +6,6 @@ import {
   FaShoppingBag,
   FaUser,
 } from "react-icons/fa";
-import { MdLanguage } from "react-icons/md";
 import styles from "./../styles/Header.module.css";
 
 export default function Header() {

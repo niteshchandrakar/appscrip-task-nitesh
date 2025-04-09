@@ -7,7 +7,8 @@ This project is a _responsive e-commerce website UI_ , built using _React_ and _
 ## 🚀 Key Features
 
 - 🔄 Fully responsive layout (Desktop + Mobile)
-- 📦 Clean architecture using _React + TypeScript + CSS Modules_
+- 📦 Clean architecture using \_React + TypeScript + CSS Modules
+- 🧱 SEO optimezed
 - 🧩 Modular and reusable components
 - 🔍 Working _filters and sorting_ using `fakestoreapi.com`
 - 🧾 Category filtering with checkbox selection
@@ -15,7 +16,7 @@ This project is a _responsive e-commerce website UI_ , built using _React_ and _
 
 ---
 
-## 🧱 Component Breakdown
+## Component Breakdown
 
 ### 🔝 Header
 
